@@ -42,4 +42,31 @@ class MigrateMongoApplicationTests {
 
         assertEquals(customer, fetchedCustomer)
     }
+
+    @Test
+    fun `should save customer with multiple bank accounts`() {
+        // given
+        val customer = NewCustomer.of(
+            "USD" to "US77602308983748679732663455",
+            "PLN" to "PL05842479609094250496642135"
+        )
+
+        // when
+        runBlocking {
+            mongoTemplate.save(customer, Customer.COLLECTION).awaitFirst()
+        }
+
+        // then
+        val fetchedCustomer = runBlocking {
+            mongoTemplate.find(
+                Query.query(
+                    where(Customer::id).isEqualTo(customer.id)
+                ),
+                NewCustomer::class.java,
+                Customer.COLLECTION
+            ).awaitFirst()
+        }
+
+        assertEquals(customer, fetchedCustomer)
+    }
 }

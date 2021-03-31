@@ -16,3 +16,21 @@ data class Customer(
             Customer(UUID.randomUUID().toString(), bankAccount)
     }
 }
+
+@Document(collection = COLLECTION)
+data class NewCustomer(
+    val id: String,
+    val bankAccounts: Set<BankAccount>
+) {
+    data class BankAccount(val currency: String, val number: String)
+
+    companion object {
+        fun of(vararg bankAccounts: Pair<String, String>) = bankAccounts
+            .map { (currency, number) ->
+                BankAccount(currency, number)
+            }
+            .let {
+                NewCustomer(UUID.randomUUID().toString(), it.toSet())
+            }
+    }
+}
