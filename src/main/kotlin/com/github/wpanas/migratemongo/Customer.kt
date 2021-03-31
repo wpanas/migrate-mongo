@@ -11,6 +11,7 @@ data class Customer(
 ) {
     companion object {
         const val COLLECTION = "customers"
+        const val DEFAULT_CURRENCY = "USD"
 
         fun of(bankAccount: String) =
             Customer(UUID.randomUUID().toString(), bankAccount)
@@ -22,9 +23,13 @@ data class NewCustomer(
     val id: String,
     val bankAccounts: Set<BankAccount>
 ) {
+    private val schemaVersion = SCHEMA_VERSION
+
     data class BankAccount(val currency: String, val number: String)
 
     companion object {
+        const val SCHEMA_VERSION = 2
+
         fun of(vararg bankAccounts: Pair<String, String>) = bankAccounts
             .map { (currency, number) ->
                 BankAccount(currency, number)
