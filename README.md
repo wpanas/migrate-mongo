@@ -1,6 +1,6 @@
 # Migrate Mongo Example Project
 
-You can learn from this project how to implement schema-versioning pattern 
+You can learn from this project how to implement the Schema Versioning pattern 
 to migrate documents from an old format to a new format.
 
 # How to navigate through this example?
